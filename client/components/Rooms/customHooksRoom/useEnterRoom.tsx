@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { socket, saveSession } from "./socket";
+import { socket, saveSession } from "../../../Socket/socket";
 
 type Entered = { participantId: string; token: string; room: { code: string } };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { socket, loadSession, clearSession } from "../socket";
+import { socket, loadSession, clearSession } from "../../../Socket/socket";
 import type { RoomState } from "../types";
 
 type Joined = { participantId: string; room: RoomState };

@@ -2,8 +2,8 @@
 
 import { Suspense } from "react";
 import { useParams } from "next/navigation";
-import ParticipantList from "../components/ParticipantList";
-import { useRoom } from "./useRoom";
+import ParticipantList from "../../../components/Rooms/Participant/ParticipantList";
+import { useRoom } from "../../../components/Rooms/customHooksRoom/useRoom";
 
 function RoomContent() {
   const { code } = useParams<{ code: string }>();

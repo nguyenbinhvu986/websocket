@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import CreateRoomForm from "./CreateRoom";
-import JoinRoomForm from "./JoinRoom";
-import RoomTabs from "./components/RoomTabs";
-import CurrentRoomCard from "./components/CurrentRoom";
-import { loadSession, type Session } from "./socket";
+import CreateRoomForm from "../../components/Rooms/customHooksRoom/CreateRoom";
+import JoinRoomForm from "../../components/Rooms/customHooksRoom/JoinRoom";
+import RoomTabs from "../../components/Rooms/RoomTabs";
+import CurrentRoomCard from "../../components/Rooms/CurrentRoom";
+import { loadSession, type Session } from "../../Socket/socket";
 
 export default function Rooms() {
   const [tab, setTab] = useState("create");
