@@ -1,6 +1,7 @@
+import { useSyncExternalStore } from "react";
 import { io } from "socket.io-client";
 
-export const socket = io("http://localhost:4000", { autoConnect: false });
+export const socket = io("http://192.168.1.127:4000", { autoConnect: false });
 
 export type Session = { code: string; participantId: string; token: string };
 
@@ -13,3 +14,14 @@ export const loadSession = (): Session | null => {
 };
 
 export const clearSession = () => sessionStorage.removeItem("session");
+
+const subscribe = () => () => {};
+
+export const useSession = (): Session | null => {
+  const raw = useSyncExternalStore(
+    subscribe,
+    () => sessionStorage.getItem("session"),
+    () => null,
+  );
+  return raw ? JSON.parse(raw) : null;
+};

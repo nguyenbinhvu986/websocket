@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import CreateRoomForm from "./CreateRoom";
 import JoinRoomForm from "./JoinRoom";
-
-const tabs = [
-  { id: "create", label: "Tạo phòng mới" },
-  { id: "join", label: "Tham gia phòng" },
-];
+import RoomTabs from "./components/RoomTabs";
+import CurrentRoomCard from "./components/CurrentRoom";
+import { loadSession, type Session } from "./socket";
 
 export default function Rooms() {
   const [tab, setTab] = useState("create");
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    setSession(loadSession());
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#09090b] p-6 text-white">
@@ -30,26 +33,17 @@ export default function Rooms() {
           quốc món Việt của phòng bạn?
         </p>
 
-        <div className="mt-6 flex gap-4">
-          {tabs.map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => setTab(id)}
-              className={`rounded-xl px-5 py-2.5 font-medium ${
-                tab === id
-                  ? "bg-white text-black"
-                  : "border border-white/10 text-gray-400 hover:text-white"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-6">
-          {tab === "create" && <CreateRoomForm />}
-          {tab === "join" && <JoinRoomForm />}
-        </div>
+        {session ? (
+          <CurrentRoomCard code={session.code} />
+        ) : (
+          <>
+            <RoomTabs tab={tab} onChange={setTab} />
+            <div className="mt-6">
+              {tab === "create" && <CreateRoomForm />}
+              {tab === "join" && <JoinRoomForm />}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomInt, randomUUID } from "crypto";
 import type { Participant, Room, RoomState } from "./types";
 
 const rooms = new Map<string, Room>();
@@ -10,7 +10,7 @@ const generateCode = () => {
   do {
     code = Array.from(
       { length: 4 },
-      () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)],
+      () => CODE_CHARS[randomInt(CODE_CHARS.length)],
     ).join("");
   } while (rooms.has(code));
   return code;

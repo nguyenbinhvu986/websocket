@@ -1,35 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { socket, saveSession } from "./socket";
-
-type Joined = { participantId: string; token: string; room: { code: string } };
+import { useState } from "react";
+import { useEnterRoom } from "./useEnterRoom";
 
 export default function JoinRoom() {
-  const router = useRouter();
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const onJoined = ({ participantId, token, room: { code } }: Joined) => {
-      saveSession({ code, participantId, token });
-      router.push(`/rooms/${code}`);
-    };
-    socket.on("room:joined", onJoined);
-    socket.on("room:error", setError);
-    return () => {
-      socket.off("room:joined", onJoined);
-      socket.off("room:error", setError);
-    };
-  }, [router]);
-
-  const handleJoin = () => {
-    setError("");
-    socket.connect();
-    socket.emit("room:join", { code, name });
-  };
+  const { error, enter } = useEnterRoom("room:joined");
 
   return (
     <div className="rounded-2xl border border-white/10 bg-[#111114] p-6 text-white">
@@ -56,7 +33,7 @@ export default function JoinRoom() {
 
       {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
       <button
-        onClick={handleJoin}
+        onClick={() => enter("room:join", { code, name })}
         disabled={!code.trim() || !name.trim()}
         className="mt-4 w-full rounded-xl bg-white p-3 font-semibold text-black disabled:bg-white/5 disabled:text-gray-500"
       >
